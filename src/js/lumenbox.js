@@ -1,36 +1,50 @@
 (function (window, document) {
   "use strict";
 
-  // define our non jquery animations
-  var FX = {
-    easing: {
-      linear: function(progress) {
-        return progress;
-      },
-      quadratic: function(progress) {
-        return Math.pow(progress, 2);
-      },
-      swing: function(progress) {
-        return 0.5 - Math.cos(progress * Math.PI) / 2;
-      },
-      circ: function(progress) {
-        return 1 - Math.sin(Math.acos(progress));
-      },
-      back: function(progress, x) {
-        return Math.pow(progress, 2) * ((x + 1) * progress - x);
-      },
-      bounce: function(progress) {
-        for (var a = 0, b = 1, result; 1; a += b, b /= 2) {
-          if (progress >= (7 - 4 * a) / 11) {
-            return -Math.pow((11 - 6 * a - 11 * progress) / 4, 2) + Math.pow(b, 2);
-          }
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = Lumenbox;
+  }
+  else {
+    if (typeof define === 'function' && define.amd) {
+      define([], function() {
+        return Lumenbox;
+      });
+    }
+    else {
+      window.Lumenbox = Lumenbox;
+    }
+  }
+
+  Lumenbox.easing = {
+    linear: function(progress) {
+      return progress;
+    },
+    quadratic: function(progress) {
+      return Math.pow(progress, 2);
+    },
+    swing: function(progress) {
+      return 0.5 - Math.cos(progress * Math.PI) / 2;
+    },
+    circ: function(progress) {
+      return 1 - Math.sin(Math.acos(progress));
+    },
+    back: function(progress, x) {
+      return Math.pow(progress, 2) * ((x + 1) * progress - x);
+    },
+    bounce: function(progress) {
+      for (var a = 0, b = 1, result; 1; a += b, b /= 2) {
+        if (progress >= (7 - 4 * a) / 11) {
+          return -Math.pow((11 - 6 * a - 11 * progress) / 4, 2) + Math.pow(b, 2);
         }
-      },
-      elastic: function(progress, x) {
-        return Math.pow(2, 10 * (progress - 1)) * Math.cos(20 * Math.PI * x / 3 * progress);
       }
     },
-    animate: function(options) {
+    elastic: function(progress, x) {
+      return Math.pow(2, 10 * (progress - 1)) * Math.cos(20 * Math.PI * x / 3 * progress);
+    }
+  };
+
+  Lumenbox.prototype.effects = {
+    animate: function (options) {
       var start = new Date;
       if (options.before) {
         options.before();
@@ -59,7 +73,7 @@
         duration: options.duration,
         delta: function(progress) {
           progress = this.progress;
-          return FX.easing.swing(progress);
+          return Lumenbox.easing.swing(progress);
         },
         complete: options.complete,
         step: function(delta) {
@@ -74,7 +88,7 @@
         duration: options.duration,
         delta: function(progress) {
           progress = this.progress;
-          return FX.easing.swing(progress);
+          return Lumenbox.easing.swing(progress);
         },
         complete: options.complete,
         step: function(delta) {
@@ -83,7 +97,6 @@
       });
     }
   };
-  window.FX = FX;
 
   function Lumenbox(options) {
     this.gallery = [];
@@ -105,11 +118,11 @@
   };
 
   Lumenbox.prototype.option = function(options) {
-    this.option = Object.assign(this.option, options);
+    this.options = Object.assign(this.options, options);
   };
 
   Lumenbox.prototype.imageCountLabel = function(currentImageNum, totalImages) {
-    return this.options.albumLabel.replace(/%current/g, currentImageNum).replace(/%total/g, totalImages);
+    return this.options.countLabel.replace(/%current/g, currentImageNum).replace(/%total/g, totalImages);
   };
 
   Lumenbox.prototype.init = function() {
@@ -131,9 +144,9 @@
                    '<div id="lumenbox" class="lumenbox">' +
                    '	<div class="lumenbox-container">' +
                    '    <img src="" alt="" id="lumenbox-img"/>' +
-                   '    <div id="lumenbox-navigation>"' +
-                   '      <span class="lumenbox-prev"></span>' +
-                   '      <span class="lumenbox-next"></span>' +
+                   '    <div id="lumenbox-navigation">' +
+                   '      <span class="lumenbox-control lumenbox-prev" id="lumenbox-prev"></span>' +
+                   '      <span class="lumenbox-control lumenbox-next" id="lumenbox-next"></span>' +
                    '    </div>' +
                    '  </div>' +
                    '	<div id="lumenbox-close">' +
@@ -147,6 +160,8 @@
     this.backDrop = document.getElementById('lumenbox-overlay');
     this.lumenbox = document.getElementById('lumenbox');
     this.closeButton = document.getElementById('lumenbox-close');
+    this.prevButton = document.getElementById('lumenbox-prev');
+    this.nextButton = document.getElementById('lumenbox-next');
 
     this.backDrop.addEventListener('click', function() {
       self.finish();
@@ -155,6 +170,16 @@
     this.closeButton.addEventListener('click', function() {
       self.finish();
       return false;
+    });
+    this.prevButton.addEventListener('click', function () {
+      self.currentImageIndex === 0
+        ? self.changeImage(self.gallery.length - 1)
+        : self.changeImage(self.currentImageIndex - 1);
+    });
+    this.nextButton.addEventListener('click', function () {
+      self.currentImageIndex === self.gallery.length - 1
+        ? self.changeImage(0)
+        : self.changeImage(self.currentImageIndex + 1);
     });
   };
 
@@ -177,10 +202,10 @@
     this.gallery = [];
     var imageNumber = 0;
 
-    function addToAlbum(item) {
+    function addToGallery(item) {
       self.gallery.push({
         alt: item.alt,
-        src: item.href,
+        src: item.src,
         title: item.title
       });
     }
@@ -191,9 +216,9 @@
     if (dataLumenboxValue) {
       items = document.querySelectorAll('[data-lumenbox="' + dataLumenboxValue + '"]');
       for (var i = 0; i < items.length; i = ++i) {
-        addToAlbum({
+        addToGallery({
           alt: items[i].getAttribute('alt'),
-          href: items[i].getAttribute('href'),
+          src: items[i].getAttribute('href'),
           title: items[i].getAttribute('title') || items[i].dataset.title
         });
         if (items[i] === items[0]) {
@@ -202,13 +227,13 @@
       }
     }
 
-    FX.fadeIn(this.backDrop, {
+    this.effects.fadeIn(this.backDrop, {
       before: function () {
         self.backDrop.style.display = 'block';
       },
       duration: this.options.transitionDuration
     });
-    FX.fadeIn(this.lumenbox, {
+    this.effects.fadeIn(this.lumenbox, {
       before: function () {
         self.lumenbox.style.display = 'block';
       },
@@ -242,18 +267,36 @@
 
     preloader.src = this.gallery[imageNumber].src;
     this.currentImageIndex = imageNumber;
+    this.updateNavigation();
+  };
+
+  Lumenbox.prototype.updateNavigation = function() {
+
+    if (this.gallery.length > 1) {
+      if (this.options.infiniteNavigation) {
+        this.prevButton.style.display = 'block';
+        this.nextButton.style.display = 'block';
+      } else {
+        if (this.currentImageIndex > 0) {
+          this.prevButton.style.display = 'block';
+        }
+        if (this.currentImageIndex < this.gallery.length - 1) {
+          this.nextButton.style.display = 'block';
+        }
+      }
+    }
   };
 
   Lumenbox.prototype.finish = function() {
     var self = this;
 
-    FX.fadeOut(this.backDrop, {
+    this.effects.fadeOut(this.backDrop, {
       duration: this.options.transitionDuration,
       complete: function () {
         self.backDrop.style.display = 'none';
       }
     });
-    FX.fadeOut(this.lumenbox, {
+    this.effects.fadeOut(this.lumenbox, {
       duration: this.options.transitionDuration,
       complete: function () {
         self.lumenbox.style.display = 'none';
@@ -261,5 +304,4 @@
     });
   };
 
-  return new Lumenbox();
 })(window, document);
