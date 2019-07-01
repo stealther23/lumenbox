@@ -1,6 +1,6 @@
 {
   "name": "lumenbox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Dragos V. Damian <dragosvdamian@gmail.com>",
   "description": "Javascript library for image overlays.",
   "scripts": {
