@@ -1,6 +1,7 @@
 # lumenbox
 ![version](https://img.shields.io/npm/v/lumenbox.svg?style=for-the-badge)
 ![npm](https://img.shields.io/npm/dt/lumenbox.svg?style=for-the-badge)
+![license](https://img.shields.io/github/license/stealther23/lumenbox.svg?style=for-the-badge)
 
 Javascript lightweight library for image overlays. No jQuery dependencies.
 
@@ -10,11 +11,11 @@ NOTE: Plugin is still under development, you may experience some kicks (or a lot
 ```npm i lumenbox```
 
 ## Usage
-[1] Grab `lumenbox.css` and `lumenbox.min.js` from the `/dist` folder and include them in your page.
+[1] Grab `lumenbox.min.css` and `lumenbox.min.js` from the `/dist` folder and include them in your page.
 
 Include the css in the `<head>` of your page
 ```
-<link href="some/path/to/lumenbox.css" rel="stylesheet">
+<link href="some/path/to/lumenbox.min.css" rel="stylesheet">
 ```
 And include the script right before the closing `</body>` tag
 ```
@@ -30,7 +31,7 @@ And include the script right before the closing `</body>` tag
 
 Individual image
 ```
- <a href="..." data-lumenbox="example-image"><img class="example-image" src="..." alt="image-1" /></a>
+ <a href="..." data-lumenbox="example-image"><img src="..." alt="image-1" /></a>
 ```
 
 Gallery (you have to use the same name on the data attribute)
