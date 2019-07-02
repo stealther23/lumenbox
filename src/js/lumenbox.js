@@ -184,6 +184,9 @@
         ? self.changeImage(0)
         : self.changeImage(self.currentImageIndex + 1);
     });
+    if (this.options.fitInViewport) {
+      window.addEventListener('resize', self.resize);
+    }
   };
 
   Lumenbox.prototype.enable = function() {
@@ -246,6 +249,36 @@
     this.changeImage(imageNumber);
   };
 
+  Lumenbox.prototype.resize = function() {
+    var imageHeight;
+    var imageWidth;
+    var maxImageHeight;
+    var maxImageWidth;
+    var wh;
+    var ww;
+
+    var img = document.getElementById('lumenbox-img');
+
+    ww = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    wh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // take the controls sizes into account and a
+    maxImageWidth = ww - 130 - 40; // 65px * 2 for the controls + 20 * 2 for each sides spacing
+    maxImageHeight = wh - 55 - 40;
+
+    if ((img.width / maxImageWidth) > (img.height / maxImageHeight)) {
+      imageWidth  = maxImageWidth;
+      imageHeight = parseInt(img.height / (img.width / imageWidth), 10);
+      img.width = imageWidth;
+      img.height = imageHeight;
+    } else {
+      imageHeight = maxImageHeight;
+      imageWidth = parseInt(img.width / (img.height / imageHeight), 10);
+      img.width = imageWidth;
+      img.height = imageHeight;
+    }
+  };
+
   Lumenbox.prototype.changeImage = function(imageNumber) {
     var self = this;
     var filename = this.gallery[imageNumber].src;
@@ -270,7 +303,7 @@
 
         // take the controls sizes into account and a
         maxImageWidth = ww - 130 - 40; // 65px * 2 for the controls + 20 * 2 for each sides spacing
-        maxImageHeight = wh - 55;
+        maxImageHeight = wh - 55 - 40;
 
         if ((preloader.width > maxImageWidth) || (preloader.height > maxImageHeight)) {
           if ((preloader.width / maxImageWidth) > (preloader.height / maxImageHeight)) {

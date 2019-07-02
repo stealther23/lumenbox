@@ -35,9 +35,9 @@ Individual image
 
 Gallery (you have to use the same name on the data attribute)
 ```
-<a href="..." data-lumenbox="example-image"><img class="example-gallery" src="..." alt="image-1" /></a>
-<a href="..." data-lumenbox="example-image"><img class="example-gallery" src="..." alt="image-2" /></a>
-<a href="..." data-lumenbox="example-image"><img class="example-gallery" src="..." alt="image-3" /></a>
+<a href="..." data-lumenbox="example-image"><img src="..." alt="image-1" /></a>
+<a href="..." data-lumenbox="example-image"><img src="..." alt="image-2" /></a>
+<a href="..." data-lumenbox="example-image"><img src="..." alt="image-3" /></a>
 ```
 
 ## Options
