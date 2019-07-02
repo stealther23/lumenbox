@@ -55,5 +55,6 @@ var Lumenbox = new Lumenbox({ showCounter: true });
 |infiniteNavigation: boolean|Wrap around the navigation| false|<span style="color:green">available</span>
 |enableKeyboardNavigation: boolean|Use `left`/`right` arrows to navigate through the gallery|false|<span style="color:red">development</span>
 |transitionDuration: number|Animation effects duration (ex. fadeIn, fadeOut)|500|<span style="color:green">available</span>
-|fitInViewport: boolean|Fit all the images inside the viewport|true|<span style="color:red">development</span>
+|fitInViewport: boolean|Fit all the images inside the viewport|true|<span style="color:green">available</span>
+|backDropClose: boolean|Close gallery when clicking overlay|true|<span style="color:green">available</span>
 

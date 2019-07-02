@@ -115,6 +115,7 @@
     infiniteNavigation: false,
     enableKeyboardNavigation: false,
     transitionDuration: 500,
+    backDropClose: true,
   };
 
   Lumenbox.prototype.option = function(options) {
@@ -163,10 +164,12 @@
     this.prevButton = document.getElementById('lumenbox-prev');
     this.nextButton = document.getElementById('lumenbox-next');
 
-    this.backDrop.addEventListener('click', function() {
-      self.finish();
-      return false;
-    });
+    if (this.options.backDropClose) {
+      this.backDrop.addEventListener('click', function() {
+        self.finish();
+        return false;
+      });
+    }
     this.closeButton.addEventListener('click', function() {
       self.finish();
       return false;
@@ -221,7 +224,7 @@
           src: items[i].getAttribute('href'),
           title: items[i].getAttribute('title') || items[i].dataset.title
         });
-        if (items[i] === items[0]) {
+        if (items[i] === target) {
           imageNumber = i;
         }
       }
@@ -251,18 +254,38 @@
 
     var preloader = new Image();
     preloader.onload = function() {
-      var $preloader;
       var imageHeight;
       var imageWidth;
       var maxImageHeight;
       var maxImageWidth;
-      var windowHeight;
-      var windowWidth;
+      var wh;
+      var ww;
 
       img.setAttribute('alt', self.gallery[imageNumber].alt);
       img.setAttribute('src', filename);
 
-      // todo
+      if (self.options.fitInViewport) {
+        ww = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        wh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+        // take the controls sizes into account and a
+        maxImageWidth = ww - 130 - 40; // 65px * 2 for the controls + 20 * 2 for each sides spacing
+        maxImageHeight = wh - 55;
+
+        if ((preloader.width > maxImageWidth) || (preloader.height > maxImageHeight)) {
+          if ((preloader.width / maxImageWidth) > (preloader.height / maxImageHeight)) {
+            imageWidth  = maxImageWidth;
+            imageHeight = parseInt(preloader.height / (preloader.width / imageWidth), 10);
+            img.width = imageWidth;
+            img.height = imageHeight;
+          } else {
+            imageHeight = maxImageHeight;
+            imageWidth = parseInt(preloader.width / (preloader.height / imageHeight), 10);
+            img.width = imageWidth;
+            img.height = imageHeight;
+          }
+        }
+      }
     };
 
     preloader.src = this.gallery[imageNumber].src;
@@ -271,6 +294,8 @@
   };
 
   Lumenbox.prototype.updateNavigation = function() {
+    this.prevButton.style.display = 'none';
+    this.nextButton.style.display = 'none';
 
     if (this.gallery.length > 1) {
       if (this.options.infiniteNavigation) {
