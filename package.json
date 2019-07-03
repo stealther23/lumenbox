@@ -1,8 +1,11 @@
 {
   "name": "lumenbox",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "Dragos V. Damian <dragosvdamian@gmail.com>",
   "description": "Javascript library for image overlays.",
+  "contributors": [
+    "Bogdana M. Damian <bogdanamonica@gmail.com>"
+  ],
   "scripts": {
     "build": "webpack --config webpack.config.js"
   },
