@@ -164,6 +164,7 @@
     this.prevButton = document.getElementById('lumenbox-prev');
     this.nextButton = document.getElementById('lumenbox-next');
 
+    // event listeners
     if (this.options.backDropClose) {
       this.backDrop.addEventListener('click', function() {
         self.finish();
@@ -184,6 +185,39 @@
         ? self.changeImage(0)
         : self.changeImage(self.currentImageIndex + 1);
     });
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+        self.finish();
+        return false;
+      }
+
+      if (self.options.enableKeyboardNavigation) {
+        // using keyCode for IE compatibility
+        if (e.key === 'ArrowRight' || e.keyCode === 39) {
+          if (self.options.infiniteNavigation) {
+            self.currentImageIndex === self.gallery.length - 1
+                ? self.changeImage(0)
+                : self.changeImage(self.currentImageIndex + 1);
+          } else if (self.currentImageIndex !== self.gallery.length - 1) {
+            self.changeImage(self.currentImageIndex + 1);
+          }
+          return false;
+        }
+
+        if (e.key === 'ArrowLeft' || e.keyCode === 37) {
+          if (self.options.infiniteNavigation) {
+            !self.currentImageIndex
+                ? self.changeImage(self.gallery.length - 1)
+                : self.changeImage(self.currentImageIndex - 1);
+          } else if (!!self.currentImageIndex) {
+            self.changeImage(self.currentImageIndex - 1);
+          }
+          return false;
+        }
+      }
+    });
+
     if (this.options.fitInViewport) {
       window.addEventListener('resize', self.resize);
     }
