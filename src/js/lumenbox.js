@@ -145,6 +145,10 @@
                    '<div id="lumenbox" class="lumenbox">' +
                    '	<div class="lumenbox-container">' +
                    '    <img src="" alt="" id="lumenbox-img"/>' +
+                   '    <div class="lumenbox-info">' +
+                   '      <span id="lumenbox-caption"></span>' +
+                   '      <span id="lumenbox-counter"></span>' +
+                   '    </div>' +
                    '    <div id="lumenbox-navigation">' +
                    '      <span class="lumenbox-control lumenbox-prev" id="lumenbox-prev"></span>' +
                    '      <span class="lumenbox-control lumenbox-next" id="lumenbox-next"></span>' +
@@ -163,6 +167,8 @@
     this.closeButton = document.getElementById('lumenbox-close');
     this.prevButton = document.getElementById('lumenbox-prev');
     this.nextButton = document.getElementById('lumenbox-next');
+    this.caption = document.getElementById('lumenbox-caption');
+    this.counter = document.getElementById('lumenbox-counter');
 
     // event listeners
     if (this.options.backDropClose) {
@@ -244,7 +250,6 @@
 
     function addToGallery(item) {
       self.gallery.push({
-        alt: item.alt,
         src: item.src,
         title: item.title
       });
@@ -257,7 +262,6 @@
       items = document.querySelectorAll('[data-lumenbox="' + dataLumenboxValue + '"]');
       for (var i = 0; i < items.length; i = ++i) {
         addToGallery({
-          alt: items[i].getAttribute('alt'),
           src: items[i].getAttribute('href'),
           title: items[i].getAttribute('title') || items[i].dataset.title
         });
@@ -357,7 +361,21 @@
 
     preloader.src = this.gallery[imageNumber].src;
     this.currentImageIndex = imageNumber;
+    this.updateInfo();
     this.updateNavigation();
+  };
+
+  Lumenbox.prototype.updateInfo = function() {
+    if (this.gallery[this.currentImageIndex].title) {
+      this.caption.innerText = this.gallery[this.currentImageIndex].title;
+    }
+
+    if (this.gallery.length > 1 && this.options.showCounter) {
+      this.counter.innerText = this.imageCountLabel(this.currentImageIndex + 1, this.gallery.length);
+      this.counter.style.display = 'block';
+    } else {
+      this.counter.style.display = 'none';
+    }
   };
 
   Lumenbox.prototype.updateNavigation = function() {
