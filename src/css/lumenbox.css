@@ -18,6 +18,7 @@
   transform: translateX(-50%) translateY(-50%);
   opacity: 0;
   display: none;
+  font-family: Arial, sans-serif;
 }
 
 #lumenbox-close {
@@ -64,4 +65,24 @@
 .lumenbox-control.lumenbox-next {
   right: -65px;
   transform: rotate(-45deg) translateY(-50%);
+}
+
+.lumenbox-info {
+  padding: 10px 0;
+  position: absolute;
+  transform: translateY(100%);
+  bottom: 0;
+}
+
+#lumenbox-caption {
+  max-width: 100%;
+  color: #eee;
+}
+
+#lumenbox-counter {
+  color: #fff;
+  font-weight: bold;
+  display: block;
+  text-align: left;
+  margin-top: 5px;
 }

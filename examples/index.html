@@ -10,24 +10,56 @@
 <section>
     <h2>Individual images</h2>
     <div>
-        <a class="example-image-link" href="https://media-public.canva.com/MADGx3Aiy9M/4/screen_2x.jpg" data-lumenbox="example-1"><img class="example-image" src="https://media-public.canva.com/MADGx3Aiy9M/4/thumbnail.jpg" alt="image-1" /></a>
-        <a class="example-image-link" href="https://media-public.canva.com/MADGx2leuVk/4/screen_2x.jpg" data-lumenbox="example-2"><img class="example-image" src="https://media-public.canva.com/MADGx2leuVk/4/thumbnail.jpg" alt="image-2" /></a>
-        <a class="example-image-link" href="https://media-public.canva.com/MADGvh80cKs/7/screen_2x.jpg" data-lumenbox="example-3"><img class="example-image" src="https://media-public.canva.com/MADGvh80cKs/7/thumbnail.jpg" alt="image-3" /></a>
+        <a class="example-image-link"
+           href="https://media-public.canva.com/MADGx3Aiy9M/4/screen_2x.jpg"
+           data-title="Some title here"
+           data-lumenbox="example-1">
+            <img class="example-image" src="https://media-public.canva.com/MADGx3Aiy9M/4/thumbnail.jpg" alt="image-1" />
+        </a>
+        <a class="example-image-link"
+           href="https://media-public.canva.com/MADGx2leuVk/4/screen_2x.jpg"
+           title="Regular title attribute"
+           data-lumenbox="example-2">
+            <img class="example-image" src="https://media-public.canva.com/MADGx2leuVk/4/thumbnail.jpg" alt="image-2" />
+        </a>
+        <a class="example-image-link"
+           href="https://media-public.canva.com/MADGvh80cKs/7/screen_2x.jpg"
+           data-lumenbox="example-3">
+            <img class="example-image" src="https://media-public.canva.com/MADGvh80cKs/7/thumbnail.jpg" alt="image-3" />
+        </a>
     </div>
 </section>
 
 <section>
     <h2>Gallery</h2>
     <div>
-        <a class="example-image-link" href="https://media-public.canva.com/MADGx3Aiy9M/4/screen_2x.jpg" data-lumenbox="my-gallery"><img class="example-image" src="https://media-public.canva.com/MADGx3Aiy9M/4/thumbnail.jpg" alt="image-1" /></a>
-        <a class="example-image-link" href="https://media-public.canva.com/MADGx2leuVk/4/screen_2x.jpg" data-lumenbox="my-gallery"><img class="example-image" src="https://media-public.canva.com/MADGx2leuVk/4/thumbnail.jpg" alt="image-2" /></a>
-        <a class="example-image-link" href="https://media-public.canva.com/MADGvh80cKs/7/screen_2x.jpg" data-lumenbox="my-gallery"><img class="example-image" src="https://media-public.canva.com/MADGvh80cKs/7/thumbnail.jpg" alt="image-3" /></a>
+        <a class="example-image-link"
+           href="https://media-public.canva.com/MADGx3Aiy9M/4/screen_2x.jpg"
+           title="Regular title attribute"
+           data-lumenbox="my-gallery">
+            <img class="example-image" src="https://media-public.canva.com/MADGx3Aiy9M/4/thumbnail.jpg" alt="image-1" />
+        </a>
+        <a class="example-image-link"
+           href="https://media-public.canva.com/MADGx2leuVk/4/screen_2x.jpg"
+           data-title="data-title attribute"
+           data-lumenbox="my-gallery">
+            <img class="example-image" src="https://media-public.canva.com/MADGx2leuVk/4/thumbnail.jpg" alt="image-2" />
+        </a>
+        <a class="example-image-link"
+           href="https://media-public.canva.com/MADGvh80cKs/7/screen_2x.jpg"
+           data-title="This is some long long long long long long long long long caption right here! cheers!"
+           data-lumenbox="my-gallery">
+            <img class="example-image" src="https://media-public.canva.com/MADGvh80cKs/7/thumbnail.jpg" alt="image-3" />
+        </a>
     </div>
 </section>
 
 <script src="../dist/js/lumenbox.min.js"></script>
 <script>
-  var Lumenbox = new Lumenbox();
+  var Lumenbox = new Lumenbox({
+    enableKeyboardNavigation: true,
+    showCounter: true
+  });
 </script>
 
 </body>
